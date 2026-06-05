@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nord Project - Aislamientos Coruña | Especialistas en Confort Térmico</title>
+    
+    <!-- Google Fonts: Outfit (Geometric & Architectural headers) & Plus Jakarta Sans (Ultra-clean body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js CDN for interactive UI states -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                nordGold: {
+                  DEFAULT: '#C5A059',
+                  dark: '#A37E3B',
+                  light: '#E5C483'
+                },
+                nordRed: {
+                  DEFAULT: '#A80000',
+                  dark: '#7A0000',
+                  light: '#D63030'
+                },
+                nordDark: '#1A1A1A',
+                nordGray: '#F8F9FA'
+              },
+              fontFamily: {
+                sans: ['Plus Jakarta Sans', 'sans-serif'],
+                outfit: ['Outfit', 'sans-serif'],
+              }
+            }
+          }
+        }
+    </script>
+
+    <style>
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.2 !important; /* Strict parameter constraint */
+        }
+        @media (min-width: 768px) {
+            h1, h2, h3, h4 {
+                line-height: 1.25 !important;
+            }
+        }
+        p {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.5 !important; /* Mobile constraint 1.4-1.6 */
+        }
+        .long-text {
+            line-height: 1.65 !important; /* Mobile constraint 1.5-1.75 */
+        }
+        *:focus-visible {
+            outline: 3px solid #C5A059;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body 
+    x-data="{ 
+        scrollAtTop: true, 
+        isMobileMenuOpen: false, 
+        isModalOpen: false, 
+        isSuccessOpen: false,
+        leadName: '',
+        leadPhone: '',
+        leadService: 'Paredes'
+    }" 
+    @scroll.window="scrollAtTop = (window.pageYOffset > 50) ? false : true"
+    class="bg-white text-nordDark antialiased font-sans"
+>
+
+    <!-- NAVIGATION HEADER -->
+    <header 
+        :class="scrollAtTop ? 'bg-white/10 md:bg-transparent py-5 border-b border-white/10' : 'bg-white shadow-lg py-3'"
+        class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        role="banner"
+    >
+        <div class="max-w-7xl mx-auto px-[5%] flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 focus:outline-none" aria-label="Ir al inicio de Nord Project">
+                <span 
+                    :class="scrollAtTop ? 'text-white' : 'text-nordDark'" 
+                    class="font-outfit font-extrabold text-2xl tracking-tight transition-colors duration-300"
+                >
+                    NORT <span class="text-nordGold">PROJECTS</span>
+                </span>
+            </a>
+
+            <!-- Desktop Menu (Switches cleanly between white/dark based on scroll position) -->
+            <nav class="hidden md:flex items-center gap-8" role="navigation" aria-label="Navegación principal">
+                <a href="#inicio" :class="scrollAtTop ? 'text-white hover:text-nordGold-light' : 'text-nordDark hover:text-nordGold'" class="text-base font-semibold transition-colors duration-300">Inicio</a>
+                <a href="#beneficios" :class="scrollAtTop ? 'text-white hover:text-nordGold-light' : 'text-nordDark hover:text-nordGold'" class="text-base font-semibold transition-colors duration-300">Beneficios</a>
+                <a href="#servicios" :class="scrollAtTop ? 'text-white hover:text-nordGold-light' : 'text-nordDark hover:text-nordGold'" class="text-base font-semibold transition-colors duration-300">Servicios</a>
+                <a href="#metodo" :class="scrollAtTop ? 'text-white hover:text-nordGold-light' : 'text-nordDark hover:text-nordGold'" class="text-base font-semibold transition-colors duration-300">Método</a>
+                <a href="#faqs" :class="scrollAtTop ? 'text-white hover:text-nordGold-light' : 'text-nordDark hover:text-nordGold'" class="text-base font-semibold transition-colors duration-300">Preguntas</a>
+            </nav>
+
+            <!-- Call-to-Action -->
+            <div class="hidden md:flex items-center gap-4">
+                <button 
+                    @click="isModalOpen = true"
+                    class="bg-nordRed hover:bg-nordRed-dark text-white font-outfit font-bold text-lg px-6 py-3 rounded-2xl transition-all duration-300 transform hover:scale-[1.03] hover:shadow-lg hover:shadow-nordRed/20 focus:outline-none"
+                    aria-haspopup="dialog"
+                >
+                    Presupuesto Rápido
+                </button>
+            </div>
+
+            <!-- Mobile Hamburger Button with Dynamic Contrast -->
+            <button 
+                @click="isMobileMenuOpen = !isMobileMenuOpen"
+                :class="scrollAtTop ? 'text-white' : 'text-nordDark'"
+                class="md:hidden p-2 focus:outline-none transition-colors duration-300"
+                aria-label="Abrir o cerrar menú móvil"
+                :aria-expanded="isMobileMenuOpen.toString()"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path x-show="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path x-show="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" style="display: none;" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div 
+            x-show="isMobileMenuOpen" 
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-4"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-4"
+            class="md:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 py-6 px-[5%] flex flex-col gap-4"
+            style="display: none;"
+        >
+            <a @click="isMobileMenuOpen = false" href="#inicio" class="text-lg font-semibold py-2 border-b border-gray-50 text-nordDark">Inicio</a>
+            <a @click="isMobileMenuOpen = false" href="#beneficios" class="text-lg font-semibold py-2 border-b border-gray-50 text-nordDark">Beneficios</a>
+            <a @click="isMobileMenuOpen = false" href="#servicios" class="text-lg font-semibold py-2 border-b border-gray-50 text-nordDark">Servicios</a>
+            <a @click="isMobileMenuOpen = false" href="#metodo" class="text-lg font-semibold py-2 border-b border-gray-50 text-nordDark">Método</a>
+            <a @click="isMobileMenuOpen = false" href="#faqs" class="text-lg font-semibold py-2 border-b border-gray-50 text-nordDark">Preguntas</a>
+            <button 
+                @click="isMobileMenuOpen = false; isModalOpen = true"
+                class="w-full bg-nordRed hover:bg-nordRed-dark text-white font-outfit font-bold text-lg py-4 rounded-2xl transition-colors duration-200 text-center mt-2"
+            >
+                Presupuesto Rápido
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section 
+        id="inicio"
+        class="relative min-h-screen pt-28 md:pt-36 pb-[10%] md:pb-[8%] flex items-center bg-cover bg-center overflow-hidden" 
+        style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1600&q=80');"
+    >
+        <!-- Background Dark Gradient Overlay (WCAG Compliant Contrast) -->
+        <div class="absolute inset-0 bg-gradient-to-r from-nordDark/95 via-nordDark/85 to-nordDark/60 z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-[5%] w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            <!-- Hero Left Side Text (Silo/Brand Content with high structural font styling) -->
+            <div class="lg:col-span-7 text-white space-y-6">
+                <span class="inline-block bg-nordGold/20 border border-nordGold/30 text-nordGold-light font-outfit font-semibold text-sm md:text-base px-4 py-2 rounded-full tracking-wider uppercase">
+                    Aislamiento Sostenible en Galicia
+                </span>
+                
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-md">
+                    Nord Project - Aislamientos Coruña
+                </h1>
+
+                <h2 class="text-xl md:text-2xl font-bold text-nordGold-light drop-shadow-sm">
+                    Soluciones térmicas que generan valor para tu hogar.
+                </h2>
+
+                <p class="text-lg md:text-xl text-gray-200 font-medium max-w-xl">
+                    Protegemos chalets y pisos de los rigores del clima gallego. Ahorra hasta un 40% en calefacción y elimina la humedad permanentemente.
+                </p>
+
+                <!-- Trust Badges with Golden Medals SVG styling -->
+                <div class="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" aria-label="Garantías de servicio">
+                    <div class="flex items-center gap-3 bg-white/5 backdrop-blur-sm p-3 rounded-2xl border border-white/10">
+                        <svg class="w-8 h-8 text-nordGold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        <span class="text-base font-bold text-white">Garantía Real</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/5 backdrop-blur-sm p-3 rounded-2xl border border-white/10">
+                        <svg class="w-8 h-8 text-nordGold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-base font-bold text-white">Obra en 24h</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/5 backdrop-blur-sm p-3 rounded-2xl border border-white/10">
+                        <svg class="w-8 h-8 text-nordGold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-base font-bold text-white">Ahorro Directo</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Right Side Form Card -->
+            <div class="lg:col-span-5 w-full">
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-gray-100 relative overflow-hidden transition-all duration-500 hover:shadow-nordGold/5 hover:border-nordGold/20">
+                    <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-nordGold to-nordRed"></div>
+                    
+                    <h3 class="text-xl md:text-2xl font-extrabold text-nordDark mb-2 flex items-center gap-2">
+                        <span>📥</span> Solicita Tu Presupuesto Gratis
+                    </h3>
+                    <p class="text-base text-gray-600 mb-6 font-medium">Estudio térmico sin compromiso para tu hogar.</p>
+
+                    <form 
+                        @submit.prevent="isSuccessOpen = true" 
+                        class="space-y-5"
+                    >
+                        <div>
+                            <label class="block text-base font-bold text-gray-700 mb-2" for="hero-name">Nombre Completo</label>
+                            <input 
+                                type="text" 
+                                id="hero-name" 
+                                x-model="leadName"
+                                required 
+                                placeholder="Escribe tu nombre" 
+                                class="w-full bg-nordGray border border-gray-200 rounded-2xl px-4 py-3 text-base focus:ring-2 focus:ring-nordGold focus:border-nordGold focus:outline-none transition-all duration-200"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-base font-bold text-gray-700 mb-2" for="hero-phone">Teléfono de Contacto</label>
+                            <input 
+                                type="tel" 
+                                id="hero-phone" 
+                                x-model="leadPhone"
+                                required 
+                                placeholder="Ej: 600 000 000" 
+                                class="w-full bg-nordGray border border-gray-200 rounded-2xl px-4 py-3 text-base focus:ring-2 focus:ring-nordGold focus:border-nordGold focus:outline-none transition-all duration-200"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-base font-bold text-gray-700 mb-2" for="hero-service">¿Qué zona necesitas aislar?</label>
+                            <select 
+                                id="hero-service" 
+                                x-model="leadService"
+                                class="w-full bg-nordGray border border-gray-200 rounded-2xl px-4 py-3 text-base focus:ring-2 focus:ring-nordGold focus:border-nordGold focus:outline-none transition-all duration-200"
+                            >
+                                <option value="Paredes (Insuflado)">Paredes (Cámaras de Aire)</option>
+                                <option value="Techos / Áticos">Techos y Cubiertas</option>
+                                <option value="Fachadas (SATE / Proyectado)">Fachadas Completas</option>
+                                <option value="Solución Técnica Integral">Estudio Integral del Edificio</option>
+                            </select>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            class="w-full bg-gradient-to-r from-nordGold to-nordGold-dark text-nordDark font-outfit font-extrabold text-lg py-4 rounded-2xl tracking-wide uppercase shadow-lg shadow-nordGold/20 hover:shadow-xl hover:shadow-nordGold/30 transition-all duration-300 transform hover:scale-[1.02]"
+                        >
+                            👉 Calcular Presupuesto
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS SECTION -->
+    <section 
+        id="beneficios"
+        class="py-[8%] md:py-[6%] bg-nordGray"
+        role="region" 
+        aria-label="Beneficios del aislamiento"
+    >
+        <div class="max-w-7xl mx-auto px-[5%] space-y-12">
+            <!-- Section Title -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <h2 class="text-2xl md:text-4xl font-extrabold text-nordDark tracking-tight">
+                    El Ahorro Energético y Confort que Necesitas en tu Hogar
+                </h2>
+                <div class="w-20 h-1 bg-nordGold mx-auto rounded-full"></div>
+                <p class="text-lg text-gray-600 font-medium">
+                    Aislar térmicamente no es un gasto, es una inversión amortizable desde el primer invierno.
+                </p>
+            </div>
+
+            <!-- Bento-Inspired Benefit Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Confort -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-2xl bg-nordRed/10 flex items-center justify-center text-nordRed mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-nordDark mb-2">Confort Térmico</h3>
+                    <p class="text-base text-gray-600 font-medium">
+                        Mantén temperaturas estables todo el año. Disfruta de la calidez óptima en tu casa sin depender de la calefacción constante.
+                    </p>
+                </div>
+
+                <!-- Card 2: Costes -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-2xl bg-nordRed/10 flex items-center justify-center text-nordRed mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-nordDark mb-2">Reducción de Costes</h3>
+                    <p class="text-base text-gray-600 font-medium">
+                        Ahorra hasta un 40% directo en tu recibo de energía eléctrica o gas en épocas de frío y calor intenso.
+                    </p>
+                </div>
+
+                <!-- Card 3: Humedades -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-2xl bg-nordRed/10 flex items-center justify-center text-nordRed mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7-7-7 7h14z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-nordDark mb-2">Adiós Humedades</h3>
+                    <p class="text-base text-gray-600 font-medium">
+                        Elimina condensaciones molestas y moho en muros interiores. Protege la salud pulmonar de toda tu familia.
+                    </p>
+                </div>
+
+                <!-- Card 4: Sin Obras -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-2xl bg-nordRed/10 flex items-center justify-center text-nordRed mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-nordDark mb-2">Sin Obras Molestas</h3>
+                    <p class="text-base text-gray-600 font-medium">
+                        Aislamiento rápido e higiénico mediante inyección exterior o interior. Sin polvo, escombros ni ruidos prolongados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS SECTION (B2C Silo) -->
+    <section 
+        id="servicios"
+        class="py-[8%] md:py-[6%] bg-white"
+        role="region" 
+        aria-label="Nuestros servicios de aislamiento"
+    >
+        <div class="max-w-7xl mx-auto px-[5%] space-y-12">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <h2 class="text-2xl md:text-4xl font-extrabold text-nordDark tracking-tight">
+                    ¿Qué solución térmica necesita tu propiedad?
+                </h2>
+                <div class="w-20 h-1 bg-nordGold mx-auto rounded-full"></div>
+                <p class="text-lg text-gray-600 font-medium">
+                    Analizamos las debilidades térmicas del edificio para aplicar el material y sistema que maximice la eficiencia.
+                </p>
+            </div>
+
+            <!-- Services Grid with dynamic layouts and unique, high-quality images -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Service Card 1: Insuflado -->
+                <article class="group bg-nordGray rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-nordGold/30">
+                    <div class="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+                        <!-- fotorrealistic Unsplash image of cavity wall filling/technician -->
+                        <img 
+                            src="images/insuflado.png" 
+                            alt="Aislamiento insuflado en cámara de aire por operario cualificado" 
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        >
+                        <!-- Premium gradient overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-nordDark/60 to-transparent"></div>
+                        <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white font-outfit">
+                            Aislamiento Insuflado
+                        </h3>
+                    </div>
+                    <div class="p-6 md:p-8 space-y-4">
+                        <p class="text-base text-gray-700 font-medium">
+                            Nuestra solución estrella para fachadas con doble tabique o cámaras de aire vacías. Inyectamos lanas minerales de alta densidad o celulosa ecológica a presión rellenando todo el vacío de tus muros en tiempo récord.
+                        </p>
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-sm font-bold text-nordGold font-outfit uppercase tracking-wider">Perfecto para Cámaras de aire</span>
+                            <button 
+                                @click="isModalOpen = true; leadService = 'Paredes (Insuflado)'"
+                                class="text-nordRed font-bold hover:text-nordRed-dark transition-colors duration-200 text-base"
+                            >
+                                Saber más →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Service Card 2: Trasdosados -->
+                <article class="group bg-nordGray rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-nordGold/30">
+                    <div class="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+                        <!-- fotorrealistic drywall installation work -->
+                        <img 
+                            src="images/trasdosado.png" 
+                            alt="Montaje de trasdosados térmicos de placas de yeso y lana de roca" 
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-nordDark/60 to-transparent"></div>
+                        <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white font-outfit">
+                            Trasdosados Térmicos
+                        </h3>
+                    </div>
+                    <div class="p-6 md:p-8 space-y-4">
+                        <p class="text-base text-gray-700 font-medium">
+                            Instalamos trasdosados con placas de yeso laminado y lanas de roca de alto rendimiento en paredes interiores que no disponen de cámara de aire. Aislamos el frío directo de la piedra de forma limpia.
+                        </p>
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-sm font-bold text-nordGold font-outfit uppercase tracking-wider">Muros sólidos y piedra</span>
+                            <button 
+                                @click="isModalOpen = true; leadService = 'Paredes (Insuflado)'"
+                                class="text-nordRed font-bold hover:text-nordRed-dark transition-colors duration-200 text-base"
+                            >
+                                Saber más →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Service Card 3: Techos (Structural wooden attic correctly mapped) -->
+                <article class="group bg-nordGray rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-nordGold/30">
+                    <div class="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+                        <!-- fotorrealistic modern wooden insulated loft/attic ceiling -->
+                        <img 
+                            src="images/techos.png" 
+                            alt="Aislamiento térmico de techos, cubiertas y buhardillas de madera" 
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-nordDark/60 to-transparent"></div>
+                        <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white font-outfit">
+                            Aislamiento en Techos
+                        </h3>
+                    </div>
+                    <div class="p-6 md:p-8 space-y-4">
+                        <p class="text-base text-gray-700 font-medium">
+                            El calor tiende a ascender de forma natural y perderse a través de las cubiertas superiores. Protegemos tejados, falsos techos y buhardillas utilizando aislamiento por proyección o mantas minerales de alta eficiencia.
+                        </p>
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-sm font-bold text-nordGold font-outfit uppercase tracking-wider">Evita pérdidas superiores</span>
+                            <button 
+                                @click="isModalOpen = true; leadService = 'Techos / Áticos'"
+                                class="text-nordRed font-bold hover:text-nordRed-dark transition-colors duration-200 text-base"
+                            >
+                                Saber más →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Service Card 4: Fachadas y Proyectados (Exterior building facade under work) -->
+                <article class="group bg-nordGray rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-nordGold/30">
+                    <div class="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+                        <!-- fotorrealistic scaffolding and building exterior facade under work -->
+                        <img 
+                            src="images/proyectado.png" 
+                            alt="Aplicación de proyectado térmico e impermeabilización en fachadas" 
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-nordDark/60 to-transparent"></div>
+                        <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white font-outfit">
+                            Fachadas y Proyectados
+                        </h3>
+                    </div>
+                    <div class="p-6 md:p-8 space-y-4">
+                        <p class="text-base text-gray-700 font-medium">
+                            Para estructuras que requieren una barrera protectora monolítica e impermeable de alta densidad. Indicado para obra nueva o reformas profundas de fachadas en zonas con alta exposición a vientos húmedos y lluvias.
+                        </p>
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-sm font-bold text-nordGold font-outfit uppercase tracking-wider">Impermeabilización extrema</span>
+                            <button 
+                                @click="isModalOpen = true; leadService = 'Fachadas (SATE / Proyectado)'"
+                                class="text-nordRed font-bold hover:text-nordRed-dark transition-colors duration-200 text-base"
+                            >
+                                Saber más →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- METODOLOGÍA SECTION -->
+    <section 
+        id="metodo"
+        class="py-[8%] md:py-[6%] bg-nordGray"
+        role="region" 
+        aria-label="Nuestro proceso de trabajo"
+    >
+        <div class="max-w-7xl mx-auto px-[5%] space-y-12">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <h2 class="text-2xl md:text-4xl font-extrabold text-nordDark tracking-tight">
+                    Nuestro Método de Trabajo en Galicia
+                </h2>
+                <div class="w-20 h-1 bg-nordGold mx-auto rounded-full"></div>
+                <p class="text-lg text-gray-600 font-medium">
+                    Trabajamos bajo estrictos protocolos de limpieza y eficiencia para alterar lo mínimo tu día a día.
+                </p>
+            </div>
+
+            <!-- Methodology Steps Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                <!-- Connector lines for desktop -->
+                <div class="hidden md:block absolute top-[25%] left-[20%] right-[20%] h-0.5 bg-nordGold/30 -z-10"></div>
+
+                <!-- Step 1 -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 text-center space-y-4 relative z-10">
+                    <div class="w-14 h-14 rounded-full bg-nordGold text-nordDark font-outfit font-extrabold text-2xl flex items-center justify-center mx-auto shadow-md">
+                        01
+                    </div>
+                    <h3 class="text-xl font-bold text-nordDark">Diagnóstico Gratuito</h3>
+                    <p class="text-base text-gray-600 font-medium">
+                        Realizamos una inspección exhaustiva de las cámaras de aire para valorar la viabilidad del proyecto.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 text-center space-y-4 relative z-10">
+                    <div class="w-14 h-14 rounded-full bg-nordGold text-nordDark font-outfit font-extrabold text-2xl flex items-center justify-center mx-auto shadow-md">
+                        02
+                    </div>
+                    <h3 class="text-xl font-bold text-nordDark">Solución a Medida</h3>
+                    <p class="text-base text-gray-600 font-medium">
+                        Elegimos el material idóneo (lana de roca o celulosa ecológica) y planificamos la fecha idónea de ejecución.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 text-center space-y-4 relative z-10">
+                    <div class="w-14 h-14 rounded-full bg-nordGold text-nordDark font-outfit font-extrabold text-2xl flex items-center justify-center mx-auto shadow-md">
+                        03
+                    </div>
+                    <h3 class="text-xl font-bold text-nordDark">Ejecución Rápida</h3>
+                    <p class="text-base text-gray-600 font-medium">
+                        Insuflamos y sellamos cada entrada de manera milimétrica en solo un día, dejando tu hogar limpio y cómodo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQS SECTION -->
+    <section 
+        id="faqs"
+        class="py-[8%] md:py-[6%] bg-white"
+        role="region" 
+        aria-label="Preguntas frecuentes"
+    >
+        <div class="max-w-4xl mx-auto px-[5%] space-y-12">
+            <!-- Section Header -->
+            <div class="text-center space-y-4">
+                <h2 class="text-2xl md:text-4xl font-extrabold text-nordDark tracking-tight">
+                    Preguntas Frecuentes sobre Aislamiento en Coruña
+                </h2>
+                <div class="w-20 h-1 bg-nordGold mx-auto rounded-full"></div>
+            </div>
+
+            <!-- FAQ Accordion Layout (Robust Alpine.js States) -->
+            <div x-data="{ activeAccordion: null }" class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden transition-colors duration-300" :class="activeAccordion === 1 ? 'border-nordGold bg-nordGray' : 'bg-white'">
+                    <button 
+                        @click="activeAccordion = (activeAccordion === 1) ? null : 1"
+                        class="w-full px-6 py-5 text-left font-outfit font-bold text-base sm:text-lg md:text-xl text-nordDark flex items-center justify-between focus:outline-none"
+                        :aria-expanded="(activeAccordion === 1).toString()"
+                    >
+                        <span>¿Es necesario salir de la vivienda durante el insuflado?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300 text-nordGold" :class="activeAccordion === 1 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div 
+                        x-show="activeAccordion === 1" 
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 max-h-0"
+                        x-transition:enter-end="opacity-100 max-h-screen"
+                        class="px-6 pb-6 text-base text-gray-700 font-medium"
+                        style="display: none;"
+                    >
+                        No, en absoluto. El proceso de insuflado es sumamente limpio y seguro. No genera vapores, olores ni residuos peligrosos. El equipo trabaja desde el exterior (o en interiores de forma focalizada) perforando orificios mínimos de apenas unos centímetros que luego se sellan con mortero del mismo color de la pared.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden transition-colors duration-300" :class="activeAccordion === 2 ? 'border-nordGold bg-nordGray' : 'bg-white'">
+                    <button 
+                        @click="activeAccordion = (activeAccordion === 2) ? null : 2"
+                        class="w-full px-6 py-5 text-left font-outfit font-bold text-base sm:text-lg md:text-xl text-nordDark flex items-center justify-between focus:outline-none"
+                        :aria-expanded="(activeAccordion === 2).toString()"
+                    >
+                        <span>¿Qué materiales aislantes utilizan en Galicia?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300 text-nordGold" :class="activeAccordion === 2 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div 
+                        x-show="activeAccordion === 2" 
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 max-h-0"
+                        x-transition:enter-end="opacity-100 max-h-screen"
+                        class="px-6 pb-6 text-base text-gray-700 font-medium"
+                        style="display: none;"
+                    >
+                        Para el clima de Galicia, priorizamos materiales hidrófugos de alta calidad como la Lana Mineral Blanca, Lana de Roca ignífuga o la Celulosa ecológica tratada contra el fuego y xilófagos. Estos materiales impiden el asentamiento de humedad por capilaridad en el muro mientras permiten que la casa respire.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden transition-colors duration-300" :class="activeAccordion === 3 ? 'border-nordGold bg-nordGray' : 'bg-white'">
+                    <button 
+                        @click="activeAccordion = (activeAccordion === 3) ? null : 3"
+                        class="w-full px-6 py-5 text-left font-outfit font-bold text-base sm:text-lg md:text-xl text-nordDark flex items-center justify-between focus:outline-none"
+                        :aria-expanded="(activeAccordion === 3).toString()"
+                    >
+                        <span>¿El aislamiento térmico elimina el moho por condensación?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300 text-nordGold" :class="activeAccordion === 3 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div 
+                        x-show="activeAccordion === 3" 
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 max-h-0"
+                        x-transition:enter-end="opacity-100 max-h-screen"
+                        class="px-6 pb-6 text-base text-gray-700 font-medium"
+                        style="display: none;"
+                    >
+                        Sí, totalmente. El moho se genera cuando el aire interior húmedo entra en contacto con una pared fría que da al exterior (punto de rocío). Al insuflar la cámara de aire, eliminamos ese muro helado, elevando la temperatura de la pared y erradicando el moho y las condensaciones interiores de por vida.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SECTION -->
+    <footer 
+        class="bg-nordDark text-gray-300 pt-[8%] pb-4 relative overflow-hidden" 
+        role="contentinfo"
+    >
+        <!-- Gold Subtle Line Top -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-nordGold"></div>
+
+        <div class="max-w-7xl mx-auto px-[5%] grid grid-cols-1 md:grid-cols-12 gap-8 pb-[6%]">
+            <!-- Col 1: Brand Info -->
+            <div class="md:col-span-3 space-y-4">
+                <span class="font-outfit font-extrabold text-2xl tracking-tight text-white block">
+                    NORT <span class="text-nordGold">PROJECTS</span>
+                </span>
+                <p class="text-base text-gray-400 font-medium leading-relaxed">
+                    Especialistas en aislamiento insuflado y soluciones térmicas de alta eficiencia energética para hogares en A Coruña y toda Galicia.
+                </p>
+            </div>
+
+            <!-- Col 2: Useful Links -->
+            <div class="md:col-span-2 space-y-4">
+                <h4 class="text-lg font-bold text-white font-outfit">Enlaces de Interés</h4>
+                <ul class="space-y-2 text-base font-semibold">
+                    <li><a href="#inicio" class="hover:text-nordGold transition-colors duration-200">Aislamiento Residencial</a></li>
+                    <li><a href="#servicios" class="hover:text-nordGold transition-colors duration-200">Servicios Térmicos</a></li>
+                    <li><a href="#metodo" class="hover:text-nordGold transition-colors duration-200">Nuestro Método</a></li>
+                    <li><a href="#faqs" class="hover:text-nordGold transition-colors duration-200">Preguntas Frecuentes</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Contact and Local SEO Schema parameters -->
+            <div class="md:col-span-3 space-y-4">
+                <h4 class="text-lg font-bold text-white font-outfit">Contacto</h4>
+                <ul class="space-y-3 text-base font-semibold">
+                    <li class="flex items-center gap-3">
+                        <span class="text-nordRed">📞</span>
+                        <a href="tel:639878385" class="hover:text-nordGold transition-colors duration-200">639 878 385</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-nordRed">✉️</span>
+                        <a href="mailto:norprojetcsctisl@gmail.com" class="hover:text-nordGold transition-colors duration-200">norprojetcsctisl@gmail.com</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-nordRed">📍</span>
+                        <span>A Coruña, Galicia, España</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Maps / Local SEO -->
+            <div class="md:col-span-4 space-y-4">
+                <h4 class="text-lg font-bold text-white font-outfit">Localización</h4>
+                <div class="w-full h-44 rounded-2xl overflow-hidden border border-gray-800">
+                    <iframe src="https://maps.google.com/maps?q=Calle%20Roma%2C%209%2C%2015008%2C%20A%20Coru%C3%B1a&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBFOOTER (Strict constraints) -->
+        <div class="max-w-7xl mx-auto px-[5%] pt-6 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 font-semibold">
+            <div>
+                Aislamientos Coruña | Todos los Derechos Reservados.
+            </div>
+            <div class="flex items-center flex-wrap justify-center gap-2">
+                <span>Diseñado con</span>
+                <img draggable="false" role="img" class="emoji inline-block w-4 h-4 mx-1" alt="❤" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg">
+                <span>por</span>
+                <a href="https://seolife.es" rel="nofollow" target="_blank" class="hover:text-nordGold transition-colors duration-200">SEOLife.es</a>
+            </div>
+            <div class="flex gap-4">
+                <a href="#" rel="nofollow" class="hover:text-nordGold transition-colors duration-200">Política de Privacidad</a>
+                <span>|</span>
+                <a href="#" rel="nofollow" class="hover:text-nordGold transition-colors duration-200">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE LEAD GENERATION MODAL (No-Alert Constraint compliant) -->
+    <div 
+        x-show="isModalOpen" 
+        class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-nordDark/70 backdrop-blur-sm"
+        style="display: none;"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+    >
+        <div 
+            @click.away="isModalOpen = false" 
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative border border-gray-100"
+        >
+            <button 
+                @click="isModalOpen = false" 
+                class="absolute top-4 right-4 text-gray-400 hover:text-nordDark transition-colors duration-200 text-3xl focus:outline-none"
+                aria-label="Cerrar modal"
+            >
+                &times;
+            </button>
+
+            <h3 id="modal-title" class="text-xl md:text-2xl font-extrabold text-nordDark mb-4">
+                Solicita Tu Presupuesto Gratis
+            </h3>
+            
+            <form 
+                @submit.prevent="isModalOpen = false; isSuccessOpen = true" 
+                class="space-y-4"
+            >
+                <div>
+                    <label class="block text-base font-bold text-gray-700 mb-1" for="modal-name">Nombre</label>
+                    <input 
+                        type="text" 
+                        id="modal-name" 
+                        x-model="leadName"
+                        required 
+                        placeholder="Nombre completo" 
+                        class="w-full bg-nordGray border border-gray-200 rounded-2xl px-4 py-3 text-base focus:ring-2 focus:ring-nordGold focus:outline-none"
+                    >
+                </div>
+                <div>
+                    <label class="block text-base font-bold text-gray-700 mb-1" for="modal-phone">Teléfono</label>
+                    <input 
+                        type="tel" 
+                        id="modal-phone" 
+                        x-model="leadPhone"
+                        required 
+                        placeholder="Ej: 600 000 000" 
+                        class="w-full bg-nordGray border border-gray-200 rounded-2xl px-4 py-3 text-base focus:ring-2 focus:ring-nordGold focus:outline-none"
+                    >
+                </div>
+                <div>
+                    <label class="block text-base font-bold text-gray-700 mb-1" for="modal-service">Servicio</label>
+                    <select 
+                        id="modal-service" 
+                        x-model="leadService"
+                        class="w-full bg-nordGray border border-gray-200 rounded-2xl px-4 py-3 text-base focus:ring-2 focus:ring-nordGold focus:outline-none"
+                    >
+                        <option value="Paredes (Insuflado)">Paredes (Cámaras de Aire)</option>
+                        <option value="Techos / Áticos">Techos y Cubiertas</option>
+                        <option value="Fachadas (SATE / Proyectado)">Fachadas Completas</option>
+                    </select>
+                </div>
+                <button 
+                    type="submit" 
+                    class="w-full bg-nordGold hover:bg-nordGold-dark text-nordDark font-outfit font-extrabold text-lg py-4 rounded-2xl transition-all duration-200"
+                >
+                    Enviar Solicitud
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS MESSAGE DIALOG (Replaces alert() and confirm() completely) -->
+    <div 
+        x-show="isSuccessOpen" 
+        class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-nordDark/70 backdrop-blur-sm"
+        style="display: none;"
+        role="dialog"
+        aria-modal="true"
+    >
+        <div 
+            @click.away="isSuccessOpen = false" 
+            class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-4 border border-gray-100"
+        >
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                ✓
+            </div>
+            <h3 class="text-2xl font-extrabold text-nordDark">¡Solicitud Recibida!</h3>
+            <p class="text-base text-gray-600 font-medium">
+                Gracias <strong x-text="leadName"></strong>. Hemos recibido tu solicitud para aislar <strong x-text="leadService"></strong>. Nos pondremos en contacto contigo en el teléfono <strong x-text="leadPhone"></strong> en menos de 24 horas laborables.
+            </p>
+            <button 
+                @click="isSuccessOpen = false" 
+                class="w-full bg-nordDark hover:bg-nordDark/90 text-white font-outfit font-bold text-lg py-3 rounded-2xl transition-colors duration-200"
+            >
+                Entendido
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button 
+        x-show="!scrollAtTop" 
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-10"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 translate-y-10"
+        @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+        class="fixed bottom-6 right-6 z-40 bg-nordGold hover:bg-nordGold-dark text-nordDark w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-nordGold focus:ring-offset-2"
+        aria-label="Volver arriba"
+        style="display: none;"
+    >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+</body>
+</html>

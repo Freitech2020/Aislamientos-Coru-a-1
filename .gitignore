@@ -1,0 +1,16 @@
+# Ignore large template archives and unzipped packages
+*.zip
+architecture-interior-design-rtl-ready-template-*/
+inspire-interior-and-architecture-*/
+xafran-architecture-html-template-*/
+
+# Ignore raw/temp design files and documents
+1er borrador.png
+1er borrador.jpg
+reunión.docx
+reunion_text.txt
+logo parecido.jpeg
+modelo banani.png
+nort projects.jpeg
+scratch/
+.gemini/
